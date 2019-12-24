@@ -1,0 +1,112 @@
+%B5サイズの指定
+\documentclass[b5paper, titlepage, 11pt]{jsarticle}
+\usepackage[utf8]{inputenc}
+
+%余白の設定 http://joker.hatenablog.com/entry/2012/07/09/153537
+\usepackage[top=25truemm,bottom=25truemm,left=34truemm,right=25truemm]{geometry} 
+
+%図を使います
+\usepackage[dvipdfmx]{graphicx}
+
+%文献スタイルの設定
+\usepackage{kyotosoc_bib}
+
+%注のスタイルの設定 http://www.latex-cmd.com/struct/footnote.html
+\renewcommand{\thefootnote}{(\arabic{footnote})}
+
+%文字数と行数の指定 https://rion778.hatenablog.com/entry/20091002/1254482262
+\makeatletter
+\def\mojiparline#1{
+    \newcounter{mpl}
+    \setcounter{mpl}{#1}
+    \@tempdima=\linewidth
+    \advance\@tempdima by-\value{mpl}zw
+    \addtocounter{mpl}{-1}
+    \divide\@tempdima by \value{mpl}
+    \advance\kanjiskip by\@tempdima
+    \advance\parindent by\@tempdima
+}
+\makeatother
+\def\linesparpage#1{
+    \baselineskip=\textheight
+    \divide\baselineskip by #1
+}
+
+%URL表示のため
+\usepackage{url}
+
+%回帰分析の結果表で変数間を区切るための点線の設定
+%いらなかったら消してください
+\usepackage{arydshln}
+\setlength{\dashlinedash}{0.75pt}
+\setlength{\dashlinegap}{1.5pt}
+
+
+\title{社会学用BibTexスタイルファイルkyotosoc}
+\author{佐藤 慧}
+\date{\today}
+
+%-----------------documentはじまり---------------------------------
+% タイトル
+\begin{document}
+\maketitle
+
+% 目次ページ
+%目次は\setcounter{tocdepth}{2}で深さを2にできる．
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+% 一行あたり文字数の指定 https://rion778.hatenablog.com/entry/20091002/1254482262
+\mojiparline{35}
+% 1ページあたり行数の指定
+\linesparpage{34}
+
+%------------------本文はじまり--------------------------------------
+\section{はじめに}
+樋口耕一先生の\textbf{nissya.bst}と\textbf{nissya\_bib.sty}\footnote{\url{http://koichi.nihon.to/psnl/latex0.html}}を下敷きに，京都大学文学部社会学専修の卒論用BibTexスタイルファイル\textbf{kyotosoc.bst}と\textbf{kyotosoc\_bib.sty}をつくりました．\textbf{nissya\_bib}は社会学界隈でおそらく唯一のBibTexスタイルファイルとして大変有用ですが，環境の違いなどによってうまくいかないことがありますので，スタイルファイルのバージョンを増やすことも大事かと思い，配布することにしました．少しスクリプトを書き換えるだけで様々なフォーマットにできます．
+
+
+% むしろ主目的は\textbf{nissya.bst}と\textbf{nissya\_bib.sty}の簡単な書き換え方を示すことにあります．\textbf{nissya_bib}は社会学界隈でおそらく唯一のBibTexスタイルファイルとして大変有用ですが，環境の違いなどによってうまくいかないことがあります．
+
+\section{使用環境}
+私はTex環境をデスクトップにはダウンロードせずに，Overleaf\footnote{\url{https://ja.overleaf.com}}を使いました．OSはmacOs Catalina 10.15.1で，ブラウザはGoogle Chromeです．
+
+\section{どのように改変したか}
+それぞれの改変箇所については，ファイル本体の冒頭に直接書き込んでありますが，
+
+\begin{enumerate}
+    \item チルダを半角スペースに置き換え
+    \item ￥マークを\verb|\|に置き換え
+\end{enumerate}
+
+この文字コード関係の改変が主なものです．結局のところ文字コードで引っかかる場合が多いと思われます．それ以外は京大のローカルルールに合わせた書式の改変ということになります．むしろ，texファイル本体のプリアンブルで制御する部分が多いです．\textbf{sample.tex}のプリアンブルをご参照ください．改変すべき箇所と，対応するファイルの関係は以下のようなようなものです．
+
+\begin{itemize}
+    \item 余白：プリアンブルで
+    \item 文字数と行数：プリアンブルで
+    \item 本文中の文献参照と参考文献リスト：\textbf{kyotosoc.bst}で
+        \begin{itemize}
+            \item ただし，パンクチュエーションは\textbf{kyotosoc\_bib.sty}の最後の箇所で
+        \end{itemize}
+    \item 注：プリアンブルで
+\end{itemize}
+
+\section{例}
+本文中での参照は，\citet{平山洋介2018富か}のような場合は\verb|\citet{当該本のラベル}|，丸括弧内で参照する場合\citep[50]{平山2009}は\verb|\citep[50]{当該本のラベル}|とします．詳しくは前掲の樋口先生のサイトでお確かめください．
+
+\subsection{さらに例}
+
+\begin{itemize}
+    \item 持ち家の所有はライフチャンスを大きく左右する\citep{zavisca_socioeconomic_2016}．
+    \item \citet{schwartz2009}によれば，政府の住宅政策の方針は国によって大きく異なる．
+\end{itemize}
+
+%------------------本文おわり-------------------------------------
+% \clearpage
+%文献リストの指定
+\bibliography{sample}
+%文献スタイルの指定
+\bibliographystyle{kyotosoc}
+
+\end{document}
+%------------------documentおわり-------------------------------------
